@@ -1,8 +1,9 @@
 import paho.mqtt.client as mqtt
 
 
-broker_url = "broker.mqttdashboard.com"
-broker_port = 1883
+MQTT_ADDRESS = 'broker.mqttdashboard.com'
+MQTT_PORT = 1883
+MQTT_TOPIC = 'mex'
 
 
 def on_connect(client, userdata, flags, rc):
@@ -13,11 +14,12 @@ def on_message(client, userdata, message):
     print("Message Recieved: " + message.payload.decode())
 
 
-client = mqtt.Client()
-client.on_connect = on_connect
-client.on_message = on_message
-client.connect(broker_url, broker_port)
+def main():
+    client = mqtt.Client()
+    client.on_connect = on_connect
+    client.on_message = on_message
+    client.connect(MQTT_ADDRESS, MQTT_PORT)
 
-client.subscribe("mex", qos=1)
+    client.subscribe(MQTT_TOPIC, qos=1)
 
-client.loop_forever()
+    client.loop_forever()
